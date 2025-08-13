@@ -11,7 +11,7 @@ from notify.telegram import NotifyTelegram
 from parse_hosts.get_csv_hosts import GetUrlsFromCSV
 
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[logging.StreamHandler(sys.stdout)],
 )

@@ -1,9 +1,22 @@
 import asyncio
-from dataclasses import dataclass, asdict
+import logging
 import os
+import sys
+from dataclasses import asdict, dataclass
 from pathlib import Path
 
+import aiohttp
+from lifechecks.namecheap import Namecheap, NamecheapLifecheckRequest
 from parse_hosts.get_csv_hosts import GetUrlsFromCSV
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)],
+)
+
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(slots=True)
@@ -35,6 +48,16 @@ async def main() -> None:
     config = load_env_config()
     csv_parser = GetUrlsFromCSV(**asdict(config))
     urls = csv_parser.get_urls()
-    
+    pairs = {}
+    request = NamecheapLifecheckRequest(hosts=urls)
+    async with aiohttp.ClientSession() as session:
+        life_checker = Namecheap(http_session=session)
+        responce = await life_checker(data=request)
+        pairs = responce.avaliable_banned_pair
+
+    logger.info("Parsed: %s", pairs)
+
+
 if __name__ == "__main__":
+    logger.info("The service has started")
     asyncio.run(main())

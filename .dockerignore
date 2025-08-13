@@ -5,3 +5,4 @@ hosts.csv
 .vscode
 .venv
 .gitignore
+.env

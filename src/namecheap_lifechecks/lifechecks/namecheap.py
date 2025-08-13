@@ -16,10 +16,10 @@ class NamecheapLifecheckResponce:
 
 class Namecheap(Lifecheck[NamecheapLifecheckRequest, NamecheapLifecheckResponce]):
     def __init__(self, http_session: aiohttp.ClientSession) -> None:
-        self.http_session = http_session
+        self._http_session = http_session
 
     async def _fetch(self, url: str) -> tuple[str, int, bytes]:
-        async with self.http_session.get(url) as resp:
+        async with self._http_session.get(url) as resp:
             body = await resp.read()
             return url, resp.status, body
 

@@ -55,7 +55,7 @@ async def main() -> None:
         responce = await life_checker(data=request)
         pairs = responce.avaliable_banned_pair
 
-    logger.info("Parsed: %s", pairs)
+    logger.debug("Parsed: %s", pairs)
 
 
 if __name__ == "__main__":

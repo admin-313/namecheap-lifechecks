@@ -46,4 +46,6 @@ class NotifyTelegram:
             return
 
         logger.info("Banned accounts: %s", str(banned))
-        await self._notify(banned_hosts=banned)
+        await self._notify(
+            banned_hosts=[self._parse_api_user_from_link(host) for host in banned]
+        )

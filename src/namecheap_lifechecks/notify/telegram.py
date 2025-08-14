@@ -18,6 +18,16 @@ class NotifyTelegram:
         self._chat_id = chat_id
         self._message_thread_id = message_thread_id
 
+    def _parse_api_user_from_link(self, link: str) -> str:
+        parsed = urlparse(link)
+        params = parse_qs(parsed.query)
+        api_user = params.get("ApiUser", [None])[0]
+        if api_user is not None:
+            return api_user
+
+        logger.info("Could not parse ApiUser from the %s", link)
+        raise ValueError("The ApiUser wasn't parsed")
+
     async def _notify(self, banned_hosts: list[str]) -> None:
         url = f"https://api.telegram.org/bot{self._bot_token}/sendMessage"
         message = "The following hosts have been banned:\n".join(

@@ -23,7 +23,6 @@ class GetUrlsFromCSV:
         Parse CSV content and build Namecheap 'getBalances' URLs for each row.
 
         Expected headers: ApiUser, ApiKey, UserName
-        ClientIp is fixed to 89.136.200.194 as requested.
         """
         required = {"ApiUser", "ApiKey", "UserName"}
         urls: list[str] = []

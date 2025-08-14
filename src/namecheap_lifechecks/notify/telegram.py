@@ -1,6 +1,6 @@
 import logging
 import aiohttp
-
+from urllib.parse import urlparse, parse_qs
 
 logger = logging.getLogger(__name__)
 
@@ -30,13 +30,12 @@ class NotifyTelegram:
 
     async def _notify(self, banned_hosts: list[str]) -> None:
         url = f"https://api.telegram.org/bot{self._bot_token}/sendMessage"
-        message = "The following hosts have been banned:\n".join(
-            f"{host}\n" for host in banned_hosts
-        )
+        message = f"🚨 The following accounts have been banned:\n{''.join(f'<code>{self._parse_api_user_from_link(host)}</code>' for host in banned_hosts)}"
         data = {
             "chat_id": self._chat_id,
             "text": message,
             "message_thread_id": self._message_thread_id,
+            "parse_mode": "HTML"
         }
         await self._http_session.post(url=url, data=data)
 

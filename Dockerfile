@@ -20,18 +20,13 @@ echo "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.l
 # Add environment variables to cron file\n\
 printenv | grep -E "^NAMECHEAP_|^PYTHON" >> /tmp/cronfile\n\
 # Add the actual cron job with output redirection to stdout/stderr\n\
-echo "* * * * * /usr/local/bin/python3 /opt/lifechecker/src/namecheap_lifechecks/main.py >> /proc/1/fd/1 2>> /proc/1/fd/2" >> /tmp/cronfile\n\
+echo "*/15 * * * * /usr/local/bin/python3 /opt/lifechecker/src/namecheap_lifechecks/main.py >> /proc/1/fd/1 2>> /proc/1/fd/2" >> /tmp/cronfile\n\
 \n\
 # Install the cron job\n\
 crontab /tmp/cronfile\n\
 \n\
-echo "Cron started, running every minute with environment variables:"\n\
 printenv | grep -E "^NAMECHEAP_" || echo "No NAMECHEAP_ variables found"\n\
-echo "Cron job installed:"\n\
 crontab -l\n\
-echo "Container ready, waiting for cron jobs..."\n\
-echo "Next cron run should be within 1 minute..."\n\
-\n\
 # Start cron in foreground\n\
 exec cron -f' > /start.sh && chmod +x /start.sh
 

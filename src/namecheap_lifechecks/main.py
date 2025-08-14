@@ -10,6 +10,12 @@ from lifechecks.namecheap import Namecheap, NamecheapLifecheckRequest
 from notify.telegram import NotifyTelegram
 from parse_hosts.get_csv_hosts import GetUrlsFromCSV
 
+
+log_level_str = os.getenv("NAMECHEAP_LIFECHECKS_LOGGING_LEVEL", "INFO").upper()
+
+# Map string to logging constant, default to INFO if invalid
+log_level = getattr(logging, log_level_str, logging.INFO)
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",

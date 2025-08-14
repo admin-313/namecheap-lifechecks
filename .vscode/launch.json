@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Namecheap Lifechecks",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/namecheap_lifechecks/main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

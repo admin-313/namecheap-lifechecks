@@ -42,6 +42,7 @@ class NotifyTelegram:
             "message_thread_id": self._message_thread_id,
             "parse_mode": "HTML",
         }
+        logger.debug("Notification sent: %s", data["text"])
         await self._http_session.post(url=url, data=data)
 
     async def notify_if_any_banned(self, pairs: dict[str, list[str]]) -> None:

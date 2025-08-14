@@ -96,5 +96,5 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    logger.info("The service has started")
+    logger.debug("The service has started")
     asyncio.run(main())

@@ -17,7 +17,7 @@ log_level_str = os.getenv("NAMECHEAP_LIFECHECKS_LOGGING_LEVEL", "INFO").upper()
 log_level = getattr(logging, log_level_str, logging.INFO)
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=log_level,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[logging.StreamHandler(sys.stdout)],
 )
@@ -102,5 +102,5 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    logger.debug("The service has started")
+    logger.info("The service has started")
     asyncio.run(main())

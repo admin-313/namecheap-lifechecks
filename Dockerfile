@@ -17,17 +17,14 @@ ENV PYTHONUNBUFFERED=1
 RUN echo '#!/bin/bash\n\
 # Create cron job with environment variables\n\
 echo "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.local/bin:/root/.cargo/bin" > /tmp/cronfile\n\
-# Add environment variables to cron file\n\
-printenv | grep -E "^NAMECHEAP_|^PYTHON" >> /tmp/cronfile\n\
-# Add the actual cron job with output redirection to stdout/stderr\n\
+# Add environment variables to cron file (silently)\n\
+printenv | grep -E "^NAMECHEAP_|^PYTHON" >> /tmp/cronfile 2>/dev/null\n\
+# Add the actual cron job with output redirection to stdout/stderr - runs every 15 minutes\n\
 echo "*/15 * * * * /usr/local/bin/python3 /opt/lifechecker/src/namecheap_lifechecks/main.py >> /proc/1/fd/1 2>> /proc/1/fd/2" >> /tmp/cronfile\n\
 \n\
 # Install the cron job\n\
 crontab /tmp/cronfile\n\
-\n\
-printenv | grep -E "^NAMECHEAP_" || echo "No NAMECHEAP_ variables found"\n\
-crontab -l\n\
+echo "Cron job installed successfully"\n\
 # Start cron in foreground\n\
 exec cron -f' > /start.sh && chmod +x /start.sh
-
 CMD ["/start.sh"]

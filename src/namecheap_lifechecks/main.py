@@ -34,6 +34,7 @@ class Config:
     telegram_token: str
     telegram_chat_id: str
     telegram_thread_id: str
+    proxy: str
 
 
 def load_env_config() -> Config:
@@ -43,6 +44,7 @@ def load_env_config() -> Config:
     telegram_token = os.getenv("NAMECHEAP_LIFECHECKS_TELEGRAM_BOT_TOKEN")
     telegram_chat_id = os.getenv("NAMECHEAP_LIFECHECKS_TELEGRAM_CHAT_ID")
     telegram_thread_id = os.getenv("NAMECHEAP_LIFECHECKS_TELEGRAM_MESSAGE_THREAD_ID")
+    proxy = os.getenv("NAMECHEAP_LIFECHECKS_PROXY_GATEWAY")
 
     if any(
         v is None
@@ -53,6 +55,7 @@ def load_env_config() -> Config:
             telegram_chat_id,
             telegram_thread_id,
             telegram_token,
+            proxy,
         )
     ):
         raise ValueError("Set all required env vars first!!")
@@ -71,6 +74,7 @@ def load_env_config() -> Config:
         telegram_token=telegram_token,  # type:ignore[arg-type]
         telegram_thread_id=telegram_thread_id,  # type:ignore[arg-type]
         telegram_chat_id=telegram_chat_id,  # type:ignore[arg-type]
+        proxy=proxy, # type:ignore[arg-type]
     )
 
 
@@ -84,7 +88,8 @@ async def main() -> None:
     urls = csv_parser.get_urls()
     pairs = {}
     request = NamecheapLifecheckRequest(hosts=urls)
-    async with aiohttp.ClientSession() as session:
+    connector = aiohttp.TCPConnector(ssl=False)
+    async with aiohttp.ClientSession(proxy=config.proxy, connector=connector) as session:
         life_checker = Namecheap(http_session=session)
         responce = await life_checker(data=request)
         pairs = responce.avaliable_banned_pair

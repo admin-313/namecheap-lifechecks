@@ -32,7 +32,7 @@ class NotifyTelegram:
         url = f"https://api.telegram.org/bot{self._bot_token}/sendMessage"
         message = f"🚨 The following accounts have been banned:\n{
             ''.join(
-                f'<code>{self._parse_api_user_from_link(host)}</code>'
+                f'<code>{host}</code>'
                 for host in banned_hosts
             )
         }"

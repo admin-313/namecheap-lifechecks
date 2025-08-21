@@ -31,7 +31,7 @@ class Namecheap(Lifecheck[NamecheapLifecheckRequest, NamecheapLifecheckResponce]
 
         for url, status, body in results:
             text = body.decode(errors="ignore")
-            if "Response error: ApiUser has been blocked by administrator" in text:
+            if "ApiUser has been blocked by administrator" in text:
                 banned.append(url)
             elif status == 200:
                 available.append(url)

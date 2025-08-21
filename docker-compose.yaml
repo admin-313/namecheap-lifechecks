@@ -5,7 +5,7 @@ services:
       dockerfile: "Dockerfile"
     container_name: "namecheap_lifechecker"
     volumes:
-      - "/var/lib/lifechecker:/var/lib/lifechecker:ro"
+      - "./hosts:/var/lib/lifechecker:ro"
     environment:
       NAMECHEAP_LIFECHECKS_ENVIRONMENT: "${NAMECHEAP_LIFECHECKS_ENVIRONMENT}"
       NAMECHEAP_LIFECHECKS_LOGGING_LEVEL: "${NAMECHEAP_LIFECHECKS_LOGGING_LEVEL}"

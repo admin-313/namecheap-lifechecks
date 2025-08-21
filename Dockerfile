@@ -20,7 +20,7 @@ echo "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.l
 # Add environment variables to cron file (silently)\n\
 printenv | grep -E "^NAMECHEAP_|^PYTHON" >> /tmp/cronfile 2>/dev/null\n\
 # Add the actual cron job with output redirection to stdout/stderr - runs every hour\n\
-echo "*/60 * * * * /usr/local/bin/python3 /opt/lifechecker/src/namecheap_lifechecks/main.py >> /proc/1/fd/1 2>> /proc/1/fd/2" >> /tmp/cronfile\n\
+echo "@hourly /usr/local/bin/python3 /opt/lifechecker/src/namecheap_lifechecks/main.py >> /proc/1/fd/1 2>> /proc/1/fd/2" >> /tmp/cronfile\n\
 \n\
 # Install the cron job\n\
 crontab /tmp/cronfile\n\
